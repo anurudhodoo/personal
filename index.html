@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Princess 💋</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            /* Elegant Dark Red Gradient */
+            background: radial-gradient(circle at center, #3d0014 0%, #0d0005 100%);
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #ffdde1;
+            font-family: 'Playfair Display', serif;
+            user-select: none;
+        }
+
+        /* --- BACKGROUND EFFECTS --- */
+        .firefly {
+            position: absolute;
+            width: 3px; height: 3px;
+            background: #ff4d6d;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ff4d6d;
+            opacity: 0;
+            animation: float 5s infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* --- UI ELEMENTS --- */
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4rem;
+            background: linear-gradient(to bottom, #ff9a9e, #fecfef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(255, 0, 80, 0.5));
+            margin-bottom: 10px; z-index: 10;
+            transition: opacity 1s; text-align: center;
+        }
+
+        .subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; color: #ff8fa3;
+            margin-bottom: 40px; opacity: 0.7; animation: pulse 2s infinite; z-index: 10;
+        }
+
+        /* --- KISS BUTTON --- */
+        .kiss-container {
+            position: relative;
+            width: 170px; height: 170px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 5rem; cursor: pointer;
+            box-shadow: 0 0 30px rgba(255, 0, 80, 0.1);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 20;
+        }
+        .kiss-container:active { transform: scale(0.95); }
+        .kiss-container.stage-1 { box-shadow: 0 0 50px rgba(255, 0, 80, 0.3); border-color: #ff4d6d; }
+        .kiss-container.stage-2 { box-shadow: 0 0 80px rgba(255, 0, 80, 0.5); animation: heartbeat 1s infinite; background: rgba(255, 0, 80, 0.1); }
+        .kiss-container.stage-3 { box-shadow: 0 0 120px rgba(255, 0, 80, 0.8); animation: heartbeatFast 0.5s infinite; background: rgba(255, 0, 80, 0.15); }
+
+        /* --- LOVE METER --- */
+        .meter-container {
+            width: 200px; height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px; margin-top: 50px;
+            overflow: hidden; opacity: 0; transition: opacity 1s;
+        }
+        .meter-fill {
+            height: 100%; width: 0%;
+            background: linear-gradient(90deg, #ff4d6d, #d90429);
+            box-shadow: 0 0 10px #ff0050;
+            transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .meter-text { font-family: sans-serif; font-size: 0.7rem; letter-spacing: 1px; color: #ff8fa3; margin-top: 10px; opacity: 0; transition: opacity 0.5s; }
+
+        /* --- BIG KISS VISUAL --- */
+        #big-kiss-visual {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 20rem; z-index: 200; opacity: 0;
+            pointer-events: none; filter: drop-shadow(0 0 50px #ff0050);
+        }
+        .hit-screen { animation: kissHit 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+        /* --- LUXURY LETTER BOX --- */
+        .letter-box {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 90%; max-width: 500px; /* Slightly wider for text */
+
+            /* Glassmorphism + Gold Border */
+            background: rgba(20, 0, 5, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 215, 0, 0.2); /* Gold Border */
+            box-shadow: 0 0 40px rgba(0,0,0,0.8), inset 0 0 20px rgba(255, 77, 109, 0.1);
+
+            border-radius: 15px; padding: 40px 30px; text-align: center;
+            opacity: 0; pointer-events: none; z-index: 100;
+        }
+        .letter-box.visible { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; transition: all 1s ease; }
+
+        .letter-box h2 {
+            font-family: 'Great Vibes', cursive; color: #ff4d6d; font-size: 3.5rem; margin: 0 0 20px 0;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .line {
+            display: block; font-size: 1.2rem; line-height: 1.6; color: #ffe5e9; margin-bottom: 15px;
+            opacity: 0; transform: translateY(15px); transition: all 1s ease;
+        }
+        .line.show { opacity: 1; transform: translateY(0); }
+
+        .highlight { color: #ff4d6d; font-style: italic; font-weight: 600; }
+
+        /* THE MWAAAAH TEXT */
+        .big-mwah {
+            display: block;
+            font-family: 'Great Vibes', cursive;
+            font-size: 3rem;
+            color: #d90429;
+            margin-top: 15px; margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(255, 0, 80, 0.6);
+            animation: heartbeat 1.5s infinite;
+        }
+
+        .signature {
+            font-family: 'Playfair Display', serif; font-weight: 700; color: #ffd700; /* Gold Signature */
+            margin-top: 20px; display: block; font-size: 1.1rem; letter-spacing: 1px;
+            border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;
+        }
+
+        /* --- FALLING KISSES --- */
+        .kiss-mark { position: absolute; opacity: 0; animation: kissFloat 5s linear forwards; z-index: 50; filter: drop-shadow(0 0 5px rgba(255,0,80,0.5)); pointer-events: none; }
+
+        /* --- ANIMATIONS --- */
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        @keyframes float { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 50% { opacity: 0.8; } 100% { transform: translateY(-10vh) scale(1); opacity: 0; } }
+        @keyframes heartbeat { 0% { transform: scale(1); } 15% { transform: scale(1.1); } 30% { transform: scale(1); } 45% { transform: scale(1.1); } 60% { transform: scale(1); } }
+        @keyframes heartbeatFast { 0% { transform: scale(1); } 10% { transform: scale(1.15); } 20% { transform: scale(1); } 30% { transform: scale(1.15); } 40% { transform: scale(1); } }
+        @keyframes kissFloat { 0% { transform: translateY(100vh) rotate(0deg) scale(0.5); opacity: 0; } 20% { opacity: 0.8; } 100% { transform: translateY(-20vh) rotate(360deg) scale(1.5); opacity: 0; } }
+        @keyframes kissHit {
+            0% { transform: translate(-50%, -50%) scale(0) rotate(-20deg); opacity: 0; }
+            40% { transform: translate(-50%, -50%) scale(1.2) rotate(0deg); opacity: 1; }
+            60% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(2) rotate(10deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="bg-container"></div>
+
+    <h1 id="main-title">For My Princess</h1>
+    <div class="subtitle" id="sub-title">Tap to charge my kiss</div>
+
+    <div class="kiss-container" id="kiss-btn" onclick="handleKiss()">💋</div>
+
+    <div class="meter-container" id="meter-box">
+        <div class="meter-fill" id="meter-fill"></div>
+    </div>
+    <div class="meter-text" id="meter-text">Charging Love... 0%</div>
+
+    <div id="big-kiss-visual">💋</div>
+
+    <div class="letter-box" id="letter">
+        <h2>My Love...</h2>
+        <span class="line">I am thinking about you every single second.</span>
+        <span class="line">I wish I was right there with you...</span>
+        <span class="line highlight">To hold you close and give you this kiss in real life.</span>
+        <span class="line">You are my dream come true.</span>
+        <span class="line big-mwah">Mwaaaah! 💋</span>
+        <span class="signature">Yours Forever,<br>Pookiemon ❤️</span>
+    </div>
+
+    <script>
+        let clicks = 0;
+        const btn = document.getElementById('kiss-btn');
+        const title = document.getElementById('main-title');
+        const sub = document.getElementById('sub-title');
+        const letter = document.getElementById('letter');
+        const bigKiss = document.getElementById('big-kiss-visual');
+        const bg = document.getElementById('bg-container');
+        const lines = document.querySelectorAll('.line');
+        const meterBox = document.getElementById('meter-box');
+        const meterFill = document.getElementById('meter-fill');
+        const meterText = document.getElementById('meter-text');
+
+        // 1. Background Effects
+        function createFireflies() {
+            setInterval(() => {
+                const fly = document.createElement('div');
+                fly.classList.add('firefly');
+                fly.style.left = Math.random() * 100 + 'vw';
+                fly.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                bg.appendChild(fly);
+                setTimeout(() => fly.remove(), 8000);
+            }, 300);
+        }
+        createFireflies();
+
+        // 2. Click Handler
+        function handleKiss() {
+            clicks++;
+
+            // Pulse Effect
+            btn.style.transform = "scale(0.85)";
+            setTimeout(() => btn.style.transform = "scale(1)", 150);
+
+            // Show Meter
+            if (clicks === 1) {
+                meterBox.style.opacity = 1;
+                meterText.style.opacity = 1;
+            }
+
+            // Update Meter
+            if (clicks <= 4) {
+                updateMeter(clicks * 25);
+            }
+
+            if (clicks === 1) {
+                btn.classList.add('stage-1');
+                title.innerText = "Come Closer...";
+                sub.innerText = "Tap again...";
+            }
+            else if (clicks === 2) {
+                btn.classList.add('stage-2');
+                title.innerText = "I feel you...";
+                sub.innerText = "Almost there...";
+                btn.style.borderColor = "#ff0050";
+            }
+            else if (clicks === 3) {
+                btn.classList.add('stage-3');
+                title.innerText = "Ready??";
+                sub.innerText = "One last touch!";
+            }
+            else if (clicks === 4) {
+                launchFinale();
+            }
+        }
+
+        function updateMeter(percent) {
+            meterFill.style.width = percent + '%';
+            meterText.innerText = `Charging Love... ${percent}%`;
+            if (percent === 100) meterText.innerText = "SENT! 💋";
+        }
+
+        function launchFinale() {
+            title.style.opacity = 0; sub.style.opacity = 0; btn.style.opacity = 0; btn.style.pointerEvents = 'none';
+            meterBox.style.opacity = 0; meterText.style.opacity = 0;
+
+            bigKiss.classList.add('hit-screen');
+            startKissShower();
+
+            setTimeout(() => {
+                letter.classList.add('visible');
+                revealLines();
+            }, 1200);
+        }
+
+        function revealLines() {
+            lines.forEach((line, index) => {
+                setTimeout(() => { line.classList.add('show'); }, index * 1200);
+            });
+        }
+
+        function startKissShower() {
+            const emojis = ["💋", "❤️", "🌹"];
+            let count = 0;
+            const shower = setInterval(() => {
+                const k = document.createElement('div');
+                k.classList.add('kiss-mark');
+                k.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                k.style.left = Math.random() * 100 + 'vw';
+                k.style.fontSize = (Math.random() * 2 + 1.5) + 'rem';
+                k.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                document.body.appendChild(k);
+                setTimeout(() => k.remove(), 5000);
+                count++;
+                if (count > 60) clearInterval(shower);
+            }, 100);
+        }
+    </script>
+</body>
+</html>
